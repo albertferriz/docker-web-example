@@ -1,0 +1,44 @@
+version: '2'
+
+services:
+  # ===========================
+  fpm:
+    build:
+      context: ../images/
+      dockerfile: Dockerfile.php.7.1
+    ports:
+      - 9000
+    volumes:
+      - ../../:/var/www/html
+    depends_on:
+      - server
+      - database
+
+  # ===========================
+  server:
+#    build:
+#      context: ../images/
+#      dockerfile: Dockerfile.apache
+    build: ../images/server/
+    ports:
+      - 8085:80
+    volumes:
+       - ../../:/var/www/html
+    depends_on:
+      - database
+    tty: true
+
+  # ===========================
+  database:
+    build:
+      context: ../images/
+      dockerfile: Dockerfile.mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=123
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=123
+    ports:
+      - 3310:3306
+
+
+

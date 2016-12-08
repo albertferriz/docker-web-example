@@ -1,0 +1,4 @@
+#!/bin/bash
+
+echo -e "\033[101m INICIANDO LOS CONTENEDORES DE DOCKER PARA ENTORNO DE DESARROLLO \033[0m"
+docker-compose -f docker/compose/docker_compose-dev.yml up --build
