@@ -11,21 +11,20 @@ services:
     volumes:
       - ../../:/var/www/html
     depends_on:
-      - server
       - database
 
   # ===========================
   server:
-#    build:
-#      context: ../images/
-#      dockerfile: Dockerfile.apache
-    build: ../images/server/
+    build:
+      context: ../images/
+      dockerfile: Dockerfile.apache
     ports:
       - 8085:80
     volumes:
        - ../../:/var/www/html
     depends_on:
       - database
+      - fpm
     tty: true
 
   # ===========================
@@ -39,6 +38,31 @@ services:
       - MYSQL_PASSWORD=123
     ports:
       - 3310:3306
+  # ===========================
+  logstash:
+    build:
+      context: ../images/
+      dockerfile: Dockerfile.logstash
+    command: logstash -e 'input{ tcp{ port=> 9600 host=>localhost } } output{ stdout{} }'
+    depends_on:
+      - kibana
+      - elasticsearch
+    tty: true
 
+  kibana:
+    build:
+      context: ../images/
+      dockerfile: Dockerfile.kibana
+    depends_on:
+      - elasticsearch
+    ports:
+      - 5600
+      - 5601
 
-
+  elasticsearch:
+    build:
+      context: ../images/
+      dockerfile: Dockerfile.elastic
+    ports:
+      - 9200
+      - 9300

@@ -13,5 +13,5 @@ RUN a2enmod proxy_http
 RUN a2enmod proxy_fcgi
 RUN a2enmod proxy_balancer
 RUN a2enmod proxy_wstunnel
-RUN service apache2 restart
-RUN service apache2 start
+
+CMD service apache2 start && /bin/bash
