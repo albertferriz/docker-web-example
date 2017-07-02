@@ -66,3 +66,15 @@ services:
     ports:
       - 9200
       - 9300
+
+  rabbitmq:
+    build:
+      context: ../images/
+      dockerfile: Dockerfile.rabbitmq
+    ports:
+      - 4369
+      - 5671
+      - 5672
+      - 25672
+      - 15671
+      - 15672
